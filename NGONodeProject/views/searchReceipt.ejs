@@ -1,0 +1,131 @@
+<%- include('partials/header') %>
+
+<link rel="stylesheet" href="/search.css">
+
+<div class="container">
+
+    <h2 class="page-title">Receipt Search / पावती शोधा</h2>
+
+    <!-- SEARCH FORM -->
+    <div class="card">
+        <form method="GET" action="/receipt/search">
+
+            <div class="form-grid">
+
+                <div class="form-group">
+                    <label>Donor Name / दात्याचे नाव</label>
+                    <input type="text" name="donorName"
+                        value="<%= query?.donorName || '' %>">
+                </div>
+
+                <div class="form-group">
+                    <label>Receipt Date / पावती तारीख</label>
+                    <input type="date" name="receiptDate"
+                        value="<%= query?.receiptDate || '' %>">
+                </div>
+
+                <div class="form-group">
+                    <label>Mobile Number / मोबाईल नंबर</label>
+                    <input type="text" name="mobile"
+                        value="<%= query?.mobile || '' %>">
+                </div>
+
+                <div class="form-group">
+                    <label>PAN Number / पॅन क्रमांक</label>
+                    <input type="text" name="pan"
+                        value="<%= query?.pan || '' %>">
+                </div>
+
+            </div>
+
+            <div class="button-row">
+                <button type="submit" class="btn-primary">Search / शोधा</button>
+                <a href="/receipt/search" class="btn-secondary">Reset / रीसेट</a>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- RESULTS -->
+    <% if (typeof receipts !== 'undefined') { %>
+        <div class="card">
+            <h3>Search Results / शोध परिणाम</h3>
+
+            <% if (receipts.length === 0) { %>
+                <p>No receipts found. / कोणतीही पावती सापडली नाही</p>
+            <% } else { %>
+
+                <% receipts.forEach(function(r) { %>
+                    <div class="receipt-card">
+
+                        <div class="row">
+                            <label>Receipt No / पावती क्रमांक</label>
+                            <span>
+                                <a href="/receipt/<%= r.RECEIPT_NUMBER %>/pdf">
+                                    <%= r.RECEIPT_NUMBER %>
+                                </a>
+                            </span>
+                        </div>
+
+                        <div class="row">
+                            <label>Receipt Date / पावती तारीख</label>
+                            <span><%= new Date(r.RECEIPT_DATE).toLocaleDateString("en-IN") %></span>
+                        </div>
+
+                        <div class="row">
+                            <label>Donor Name / दात्याचे नाव</label>
+                            <span><%= r.DONOR_NAME %></span>
+                        </div>
+
+                        <div class="row">
+                            <label>Amount / रक्कम</label>
+                            <span>₹ <%= r.DONATION_AMOUNT %></span>
+                        </div>
+
+                        <div class="row">
+                            <label>Mobile / मोबाईल</label>
+                            <span><%= r.MOBILE_NUMBER %></span>
+                        </div>
+
+                        <div class="row">
+                            <label>Received For / प्राप्त कारण</label>
+                            <span><%= r.RECEIVED_FOR || '-' %></span>
+                        </div>
+
+                    </div>
+                <% }) %>
+
+                <!-- PAGINATION -->
+                <div class="pagination">
+
+                    <!-- PREVIOUS -->
+                    <% if (currentPage > 1) { %>
+                        <a href="/receipt/search?page=<%= currentPage - 1 %>&donorName=<%= query?.donorName || '' %>&receiptDate=<%= query?.receiptDate || '' %>&mobile=<%= query?.mobile || '' %>&pan=<%= query?.pan || '' %>">
+                            Prev / मागील
+                        </a>
+                    <% } %>
+
+                    <!-- PAGE NUMBERS -->
+                    <% for(let i = 1; i <= totalPages; i++) { %>
+                        <a href="/receipt/search?page=<%= i %>&donorName=<%= query?.donorName || '' %>&receiptDate=<%= query?.receiptDate || '' %>&mobile=<%= query?.mobile || '' %>&pan=<%= query?.pan || '' %>"
+                           class="<%= i === currentPage ? 'active' : '' %>">
+                           <%= i %>
+                        </a>
+                    <% } %>
+
+                    <!-- NEXT -->
+                    <% if (currentPage < totalPages) { %>
+                        <a href="/receipt/search?page=<%= currentPage + 1 %>&donorName=<%= query?.donorName || '' %>&receiptDate=<%= query?.receiptDate || '' %>&mobile=<%= query?.mobile || '' %>&pan=<%= query?.pan || '' %>">
+                            Next / पुढे
+                        </a>
+                    <% } %>
+
+                </div>
+
+            <% } %>
+        </div>
+    <% } %>
+
+</div>
+
+<%- include('partials/footer') %>

@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>News Maintenance</title>
+
+<style>
+
+/* WRAPPER */
+
+.news-wrapper{
+font-family: Arial, sans-serif;
+background:#f4f6f9;
+padding:10px 0;
+}
+
+/* PANEL */
+
+.news-wrapper .panel{
+background:#ffffff;
+width:96%;
+margin:20px auto;
+padding:25px;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+}
+
+/* HEADINGS */
+
+.news-wrapper h2{
+text-align:center;
+color:#1e293b;
+margin-bottom:20px;
+}
+
+/* FORM ROW */
+
+.news-wrapper .form-row{
+display:grid;
+grid-template-columns: 2fr 1fr 3fr auto;
+gap:20px;
+align-items:end;
+}
+
+/* FORM GROUP */
+
+.news-wrapper .form-group{
+display:flex;
+flex-direction:column;
+width:100%;
+}
+
+/* LABEL */
+
+.news-wrapper label{
+font-weight:600;
+margin-bottom:5px;
+color:#334155;
+}
+
+/* INPUTS */
+
+.news-wrapper input[type="text"],
+.news-wrapper select,
+.news-wrapper textarea{
+width:100%;
+padding:10px;
+border:1px solid #cbd5e1;
+border-radius:6px;
+font-size:14px;
+box-sizing:border-box;
+}
+
+/* TEXTAREA */
+
+.news-wrapper textarea{
+height:42px;
+resize:none;
+}
+
+/* BUTTON */
+
+.news-wrapper button{
+padding:10px 20px;
+background:#2563eb;
+color:#fff;
+border:none;
+border-radius:6px;
+cursor:pointer;
+font-weight:600;
+white-space:nowrap;
+}
+
+.news-wrapper button:hover{
+background:#1d4ed8;
+}
+
+/* TABLE */
+
+.news-wrapper table{
+width:100%;
+border-collapse:collapse;
+margin-top:20px;
+}
+
+.news-wrapper th,
+.news-wrapper td{
+border:1px solid #e2e8f0;
+padding:10px;
+text-align:center;
+}
+
+.news-wrapper th{
+background:#e2e8f0;
+color:#1e293b;
+}
+
+.news-wrapper tbody tr:hover{
+background:#f1f5f9;
+}
+
+/* COLUMN WIDTH CONTROL */
+
+.news-wrapper th:nth-child(1),
+.news-wrapper td:nth-child(1){
+width:80px;
+}
+
+.news-wrapper th:nth-child(2),
+.news-wrapper td:nth-child(2){
+width:220px;
+}
+
+.news-wrapper th:nth-child(3),
+.news-wrapper td:nth-child(3){
+width:450px;
+}
+
+.news-wrapper th:nth-child(4),
+.news-wrapper td:nth-child(4){
+width:120px;
+}
+
+.news-wrapper th:nth-child(5),
+.news-wrapper td:nth-child(5){
+width:300px;
+}
+
+.news-wrapper th:nth-child(6),
+.news-wrapper td:nth-child(6){
+width:120px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="news-wrapper">
+
+<div class="panel">
+
+<h2><%= editData ? "Edit News" : "Add News" %></h2>
+
+<form action="<%= editData ? '/update-news/' + editData.NEWS_ID : '/add-news' %>" method="POST">
+
+<div class="form-row">
+
+<div class="form-group">
+<label>News Title</label>
+<input type="text" name="title" required
+value="<%= editData ? editData.NEWS_TITLE : '' %>">
+</div>
+
+<div class="form-group">
+<label>Status</label>
+<select name="status">
+<option value="ACTIVE" <%= editData && editData.STATUS=='ACTIVE'?'selected':'' %>>ACTIVE</option>
+<option value="INACTIVE" <%= editData && editData.STATUS=='INACTIVE'?'selected':'' %>>INACTIVE</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Description</label>
+<textarea name="description" required><%= editData ? editData.NEWS_DESCRIPTION : '' %></textarea>
+</div>
+
+<div>
+<button type="submit">
+<%= editData ? "Update News" : "Add News" %>
+</button>
+</div>
+
+</div>
+
+</form>
+
+</div>
+
+<div class="panel">
+
+<h2>News History</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>News ID</th>
+<th>News Title</th>
+<th>News Description</th>
+<th>Status</th>
+<th>Created Date</th>
+<th>Action</th>
+</tr>
+</thead>
+
+<tbody>
+
+<% newsData.forEach(function(news){ %>
+
+<tr>
+<td><%= news.NEWS_ID %></td>
+<td><%= news.NEWS_TITLE %></td>
+<td><%= news.NEWS_DESCRIPTION %></td>
+<td><%= news.STATUS %></td>
+<td><%= news.CREATED_DATE %></td>
+<td>
+<a href="/edit-news/<%= news.NEWS_ID %>">
+<button>Edit</button>
+</a>
+</td>
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+</body>
+</html>

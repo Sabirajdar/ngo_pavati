@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Organization Search</title>
+
+<style>
+.search-panel,.result-panel{
+background:white;
+border:1px solid #cbd5e1;
+padding:15px;
+margin-bottom:25px;
+box-shadow:0 2px 5px rgba(0,0,0,0.1);
+}
+
+.search-title,.result-title{
+background:#cbd5e1;
+padding:8px;
+font-weight:bold;
+text-align:center;
+margin:-15px -15px 15px -15px;
+}
+
+.search-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:15px;
+}
+
+.search-group{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.search-group label{
+width:140px;
+font-weight:bold;
+font-size:13px;
+}
+
+.search-group input,.search-group select{
+flex:1;
+padding:6px;
+border:1px solid #ccc;
+border-radius:3px;
+}
+
+.search-buttons{
+margin-top:15px;
+display:flex;
+gap:10px;
+border-top:1px solid #eee;
+padding-top:15px;
+}
+
+button{
+padding:8px 18px;
+border:none;
+background:#3b82f6;
+color:white;
+cursor:pointer;
+border-radius:3px;
+font-weight:bold;
+}
+
+.reset{
+background:#6b7280;
+}
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+th,td{
+border:1px solid #ddd;
+padding:10px;
+text-align:left;
+}
+
+th{
+background:#e2e8f0;
+}
+
+tr:nth-child(even){
+background:#f9fafb;
+}
+
+.no-data{
+text-align:center;
+padding:20px;
+color:#666;
+}
+
+.action-buttons{
+margin-bottom:10px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="search-panel">
+
+<div class="search-title">Organization Search</div>
+
+<form method="GET" action="/search">
+
+<div class="search-grid">
+
+<div class="search-group">
+<label>Membership ID</label>
+<input type="text" name="membership_id">
+</div>
+
+<div class="search-group">
+<label>Registration Date</label>
+<input type="date" name="registration_date">
+</div>
+
+<div class="search-group">
+<label>Membership Status</label>
+<select name="status">
+<option value="">Select</option>
+<option value="Active">Active</option>
+<option value="Expired">Expired</option>
+<option value="InProgress">In Progress</option>
+</select>
+</div>
+
+<div class="search-group">
+<label>Org Name</label>
+<input type="text" name="org_name">
+</div>
+
+<div class="search-group">
+<label>Org PAN Number</label>
+<input type="text" name="org_pan">
+</div>
+
+<div class="search-group">
+<label>Member PAN Number</label>
+<input type="text" name="member_pan">
+</div>
+
+<div class="search-group">
+<label>Mobile Number</label>
+<input type="text" name="mobile">
+</div>
+
+<div class="search-group">
+<label>Email Address</label>
+<input type="email" name="email">
+</div>
+
+</div>
+
+<div class="search-buttons">
+
+<button type="submit">Search</button>
+
+<button type="button" class="reset"
+onclick="window.location.href='/search-page'">
+Reset
+</button>
+
+</div>
+
+</form>
+
+</div>
+
+<div class="result-panel">
+
+<div class="result-title">Search Results</div>
+
+<div class="action-buttons">
+<button><a href="/organization" style="color:white; text-decoration:none;">New</a></button>
+<button><a href="/export-org?<%= new URLSearchParams(query || {}).toString() %>" 
+style="color:white; text-decoration:none;">Export To Excel</a></button>
+</div>
+
+<table>
+
+<thead>
+<tr>
+<th>Organization Name</th>
+<th>Member Name</th>
+<th>Start Date</th>
+<th>End Date</th>
+<th>Membership Status</th>
+<th>Mobile Number</th>
+</tr>
+</thead>
+
+<tbody>
+
+<% if(results && results.length > 0){ %>
+
+<% results.forEach(r=>{ %>
+
+<tr>
+
+<td>
+<a href="/organization/edit/<%= r.ORG_ID %>">
+<%= r.ORG_NAME %>
+</a>
+</td>
+<td><%= r.MEMBER_NAME %></td>
+<td><%= r.START_DATE || 'N/A' %></td>
+<td><%= r.END_DATE || 'N/A' %></td>
+<td><%= r.STATUS %></td>
+<td><%= r.MOBILE %></td>
+
+</tr>
+
+<% }) %>
+
+<% } else { %>
+
+<tr>
+<td colspan="6" class="no-data">No records found</td>
+</tr>
+
+<% } %>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function(){
+
+const orgInput = document.querySelector("input[name='org_name']");
+
+orgInput.addEventListener("blur", function(){
+
+const orgName = this.value;
+
+if(!orgName) return;
+
+fetch(`/organization/getOrg?org_name=${encodeURIComponent(orgName)}`)
+
+.then(res => res.json())
+
+.then(data => {
+
+if(data){
+
+document.querySelector("input[name='mobile']").value = data.mobile || "";
+document.querySelector("input[name='email']").value = data.email || "";
+document.querySelector("select[name='status']").value = data.status || "";
+document.querySelector("input[name='org_pan']").value = data.org_pan || "";
+document.querySelector("input[name='member_pan']").value = data.member_pan || "";
+document.querySelector("input[name='membership_id']").value = data.membership_id || "";
+
+}
+
+})
+
+.catch(err=>{
+console.log("Auto fill error:",err);
+});
+
+});
+
+});
+
+</script>
+
+</body>
+</html>

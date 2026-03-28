@@ -1,0 +1,236 @@
+/* ===== Base Styles (your existing CSS) ===== */
+.container {
+    width: 700px; /* reduced from 900px */
+    margin: 20px auto;
+    font-family: Arial, sans-serif;
+}
+
+.page-title {
+    margin-bottom: 20px;
+}
+
+.card {
+    max-width: 650px;
+    margin: 10px auto;
+    background: white;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.button-row {
+    margin-top: 15px;
+}
+
+.btn-primary {
+    background: #007bff;
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.btn-secondary {
+    background: #6c757d;
+    color: white;
+    padding: 8px 14px;
+    border-radius: 4px;
+    text-decoration: none;
+    margin-left: 10px;
+}
+
+.receipt-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 6px;
+    background: #fafafa;
+}
+
+.row {
+    margin-bottom: 6px;
+}
+
+.download-link {
+    color: #007bff;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+/* ===== Responsive Styles ===== */
+@media (max-width: 768px) {
+    .container {
+        width: 95%; /* allow container to shrink on smaller screens */
+        padding: 0 10px;
+    }
+
+    .card {
+        max-width: 100%; /* card fills container on smaller screens */
+        margin: 10px auto;
+        padding: 15px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr; /* stack form fields vertically */
+        gap: 10px;
+    }
+
+    .button-row {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .btn-secondary {
+        margin-left: 0; /* remove left margin in stacked layout */
+        margin-top: 10px;
+    }
+
+    .receipt-card .row {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+    }
+}
+
+@media (max-width: 400px) {
+    .form-group input {
+        padding: 6px;
+        font-size: 0.9rem;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        padding: 6px 10px;
+        font-size: 0.9rem;
+    }
+}
+
+
+.download-link{
+color:#007bff;
+font-weight:600;
+text-decoration:none;
+}
+
+.download-link:hover{
+text-decoration:underline;
+}
+
+/* ===== Improve Row Layout ===== */
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.row label {
+    font-weight: bold;
+    color: #333;
+}
+
+/* ===== Receipt Card Improvement ===== */
+.receipt-card {
+    border: 1px solid #ddd;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: 6px;
+    background: #fafafa;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.receipt-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* ===== Pagination ===== */
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination a {
+    display: inline-block;
+    margin: 4px;
+    padding: 6px 12px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    text-decoration: none;
+    color: #333;
+    font-size: 14px;
+}
+
+.pagination a:hover {
+    background: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+.pagination a.active {
+    background: #007bff;
+    color: #fff;
+    border-color: #007bff;
+}
+
+/* ===== Button Row Improvement ===== */
+.button-row {
+    margin-top: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+/* ===== Responsive Enhancements ===== */
+@media (max-width: 768px) {
+
+    .row {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .row span {
+        margin-top: 3px;
+    }
+
+    .pagination a {
+        padding: 5px 10px;
+        font-size: 13px;
+    }
+}
+
+/* ===== Extra Small Devices ===== */
+@media (max-width: 400px) {
+
+    .pagination a {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+
+    .receipt-card {
+        padding: 12px;
+    }
+}

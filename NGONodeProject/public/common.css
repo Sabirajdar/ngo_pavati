@@ -1,0 +1,147 @@
+/* ===== GLOBAL STYLES ===== */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #F4F6FB;
+}
+
+/* ===== CARD HEADER ===== */
+.card-header-custom{
+    background:#2f4da0;
+    color:white;
+    font-weight:500;
+}
+
+/* ===== PAGE WRAPPER ===== */
+.main-wrapper {
+    min-height: calc(100vh - 120px); 
+    display: flex;
+    flex-direction: column;
+}
+
+/* ===== PAGE TITLE ===== */
+.page-title{
+    padding: 25px;
+    font-size: 24px;
+}
+
+/* ===== PAGE CONTAINER ===== */
+.page-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* ===== CONTACT CARD ===== */
+.contact-card{
+    background: white;
+    padding: 25px 35px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    font-size: 16px;
+}
+
+/* ===== NAVBAR ===== */
+.navbar {
+    background:#2f4a8a;
+    color:white;
+    padding:12px 20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+}
+
+.logo{
+    font-weight:bold;
+    font-size:18px;
+}
+
+.nav-links{
+    display:flex;
+    gap:15px;
+}
+
+.nav-links a{
+    color:white;
+    text-decoration:none;
+    font-weight:500;
+}
+
+.nav-links a:hover{
+    color:#FFD700;
+}
+
+.welcome{
+    font-size:14px;
+}
+
+/* ===== MOBILE MENU BUTTON ===== */
+.menu-toggle{
+    display:none;
+    font-size:24px;
+    cursor:pointer;
+    color:white;
+}
+
+/* ===== FOOTER ===== */
+.footer{
+    text-align:center;
+    padding:15px;
+    background:#2f4a8a;
+    color:white;
+    margin-top:auto;
+}
+
+/* ===== MOBILE RESPONSIVE ===== */
+@media (max-width:768px){
+
+    .menu-toggle{
+        display:block;
+    }
+
+    .nav-links{
+        display:none;
+        flex-direction:column;
+        width:100%;
+        margin-top:10px;
+        background:#2f4a8a;
+        padding:10px 0;
+    }
+
+    .nav-links a{
+        display:block;
+        padding:10px 15px;
+        border-top:1px solid rgba(255,255,255,0.15);
+    }
+
+    .nav-links.active{
+        display:flex;
+    }
+
+    .welcome{
+        font-size:12px;
+    }
+
+    .page-title{
+        padding:20px;
+    }
+}
+
+@media (max-width:480px){
+
+    .logo{
+        font-size:16px;
+    }
+
+    .navbar{
+        padding:10px 15px;
+    }
+
+    .nav-links a{
+        font-size:14px;
+    }
+
+}

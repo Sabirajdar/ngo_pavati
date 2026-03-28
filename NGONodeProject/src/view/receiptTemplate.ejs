@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+<style>
+body{
+  font-family: Arial, Helvetica, sans-serif;
+  font-size:14px;
+  padding:20px;
+}
+
+.receipt{
+  width:850px;
+  margin:auto;
+  padding:20px 25px;
+  box-sizing:border-box;
+  border:1.5px solid #000;
+}
+
+.center{
+  text-align:center;
+}
+
+.flex{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.header{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  position:relative;
+  margin-bottom:10px;
+}
+.logo-section{
+  position:absolute;
+  left:0;
+  width:70px;
+  height:70px;
+}
+
+.logo{
+  width:70px;
+  height:70px;
+  object-fit:cover;
+  border-radius:1px;
+}
+
+.org-details{
+  text-align:center;
+}
+
+.org-details h2{
+  margin:0;
+  font-size:24px;
+  font-weight:bold;
+}
+
+.small{
+  font-size:13px;
+}
+
+
+
+.amount-box{
+  border:1.5px solid #000;
+  padding:10px 40px;
+  font-weight:bold;
+  font-size:20px;
+  display:inline-block;
+}
+
+.signature{
+  width:70px;
+}
+
+hr{
+  border:none;
+  border-top:1px solid #000;
+  margin:10px 0;
+}
+
+h3{
+  text-align:center;
+  margin:5px 0 10px 0;
+  text-decoration:underline;
+}
+
+p{
+  text-align:justify;
+  line-height:1.4;
+}
+
+.row{
+  margin:8px 0;
+}
+@page {
+  margin:20px;
+}
+.flex{
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+</style>
+</head>
+
+<body>
+
+<div class="receipt">
+
+<!-- HEADER -->
+<div class="header">
+<div class="logo-section">
+  <% if (logoUrl) { %>
+      <img src="<%= logoUrl %>" class="logo">
+  <% } %>
+</div>
+  <div class="org-details">
+    <h2><%= orgName %></h2>
+
+    <div class="small">
+      <%= orgAddress %>
+    </div>
+
+    <div class="small">
+      Phone: <b><%= orgPhone %></b> | Email: <b><%= orgEmail %></b>
+    </div>
+  </div>
+
+</div>
+<hr>
+
+<div class="small flex">
+<div>Regd. No.: <%= orgRegNumber %></div>
+<div>PAN No.: <%= orgPAN %></div>
+</div>
+
+<div class="small flex">
+<div>I.T. Exemption Cert. No. (80G No.): <%= org80G %></div>
+<div>12A Regn No.: <%= org12A %></div>
+</div>
+
+<hr>
+
+<h3>DONATION RECEIPT</h3>
+
+<!-- RECEIPT INFO -->
+<div class="flex">
+<div>Receipt No.: <b><%= receiptNumber %></b></div>
+<div>Financial Year: <b><%= financialYear %></b></div>
+<div>Date: <b><%= receiptDate %></b></div>
+</div>
+
+<br>
+
+<div class="row ">
+Received with thanks from  :
+<b><%= donorName %></b>
+</div>
+
+<div class="row" >
+Address : <b><%= address %></b>
+</div>
+
+<div class="flex row">
+<div>Mobile No.: <b><%= mobile %></b></div>
+<div>Email: <b><%= email %></b></div>
+<div>Donor PAN: <b><%= panNumber %></b></div>
+</div>
+
+<div class="row">
+Aadhaar No.: <b><%= aadharNumber %></b>
+&nbsp;&nbsp;&nbsp;
+Amount in Words: <b><%= amountWords %></b>
+</div>
+
+<div class="row">
+Towards : <b>Donation</b>
+&nbsp;&nbsp;&nbsp;
+Purpose : <b><%= purpose %></b>
+&nbsp;&nbsp;&nbsp;
+Mode of Payment : <b><%= paymentMode %></b>
+</div>
+
+<div class="row">
+Date: <b><%= paymentDate %></b>
+&nbsp;&nbsp;&nbsp;
+Transaction/Check Number : <b><%= transactionId %></b>
+</div>
+
+<br>
+
+<div class="flex">
+<div class="amount-box">Rs. <%= amount %> /-</div>
+<div><b>Thank You...!</b></div>
+</div>
+
+<hr>
+
+<div class="center"><b>VERIFICATION</b></div>
+
+<p class="small">
+I, <b><%= declarationName || '-' %></b>,
+son/daughter/wife of <b><%= fatherFullName || '-' %></b>, solemnly declare that to the best of my knowledge and belief,
+the information given in the certificate is correct and complete and is in accordance with
+the provisions of the Income-Tax Act, 1961. I further declare that I am making this certificate
+in my capacity as President and I am also competent to issue this certificate.
+I am holding PAN <b><%= memberPan %></b>.
+</p>
+
+<div class="flex">
+<div>Date: <%= receiptDate %></div>
+<div style="text-align:right;">
+  
+  <% if(signatureUrl){ %>
+  <img src="<%= signatureUrl %>" width="120"><br>
+  <% } %>
+
+  <span>Signature</span>
+
+</div>
+
+</div>
+
+<hr>
+
+<div class="small flex">
+<div>PAN: <%= orgPAN %></div>
+<div>12A Regn No.: <%= org12A || '-' %></div>
+<div>Dated: <%= org12ADate || '-' %></div>
+</div>
+
+<br>
+
+<div class="small flex">
+<div>80G Regn No.: <%= org80G || '-' %></div>
+<div>Dated: <%= org80GDate || '-' %></div>
+</div>
+
+<br>
+
+<div class="small">
+Charitable Institutions are not required to affix revenue stamp on receipt under schedule | ART-53 exemption(b) of the Indian Stamp Act.
+</div>
+
+</div>
+
+</body>
+</html>

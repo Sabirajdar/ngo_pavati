@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+*{
+box-sizing:border-box;
+margin:0;
+padding:0;
+}
+
+body{
+font-family:Arial,sans-serif;
+background:#f4f6f9;
+}
+
+/* CONTAINER */
+
+.container{
+max-width:1300px;
+margin:30px auto;
+padding:0 20px;
+}
+
+/* SUMMARY BOXES */
+
+.dashboard-boxes{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+margin-bottom:40px;
+}
+
+.box{
+background:#fff;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+text-align:center;
+}
+
+.box h3{
+margin:0;
+font-size:14px;
+color:#666;
+}
+
+.box p{
+font-size:26px;
+font-weight:bold;
+margin-top:8px;
+color:#2563eb;
+}
+
+/* PANEL */
+
+.panel{
+background:#fff;
+padding:20px;
+border-radius:10px;
+box-shadow:0 4px 12px rgba(0,0,0,0.08);
+margin-bottom:30px;
+}
+
+.panel h2{
+margin-top:0;
+}
+
+/* TABLE */
+
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+table th,table td{
+padding:10px;
+text-align:left;
+border-bottom:1px solid #eee;
+font-size:14px;
+}
+
+table th{
+background:#f1f5f9;
+}
+
+/* CHART */
+
+.chart-container{
+width:420px;
+margin:auto;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<!-- SUMMARY BOXES -->
+
+<div class="dashboard-boxes">
+
+<div class="box">
+<h3>Total Members</h3>
+<p><%= counts ? counts.totalMembers : 0 %></p>
+</div>
+
+<div class="box">
+<h3>Active Members</h3>
+<p><%= counts ? counts.activeMembers : 0 %></p>
+</div>
+
+<div class="box">
+<h3>Expired Memberships</h3>
+<p><%= counts ? counts.expiredMembers : 0 %></p>
+</div>
+
+<div class="box">
+<h3>Expiring in Next 30 Days</h3>
+<p><%= counts ? counts.expiringSoon : 0 %></p>
+</div>
+
+<div class="box">
+<h3>Total Amount</h3>
+<p>Rs.<%= counts ? counts.totalAmount : 0 %></p>
+</div>
+
+</div>
+
+
+<!-- PIE CHART -->
+
+<div class="panel">
+
+<h2>Membership Distribution</h2>
+
+<div class="chart-container">
+<canvas id="membershipChart"></canvas>
+</div>
+
+</div>
+
+
+<!-- EXPIRING MEMBERS TABLE -->
+
+<div class="panel">
+
+<h2>Memberships Expiring in Next 30 Days</h2>
+
+<table>
+
+<thead>
+
+<tr>
+<th>Member Name</th>
+<th>Organization</th>
+<th>Expiry Date</th>
+<th>Days Left</th>
+<th>Status</th>
+<th>Contact Number</th>
+</tr>
+
+</thead>
+
+<tbody>
+
+<% if(expiringMembers && expiringMembers.length){ %>
+
+<% expiringMembers.forEach(member=>{ %>
+
+<tr>
+
+<td><%= member.FULL_NAME %></td>
+
+<td><%= member.ORG_NAME %></td>
+
+<td><%= member.END_DATE %></td>
+
+<td><%= member.daysLeft %></td>
+
+<td><%= member.MEMBERSHIP_STATUS %></td>
+
+<td><%= member.PRI_MOBILE %></td>
+
+</tr>
+
+<% }) %>
+
+<% } else { %>
+
+<tr>
+<td colspan="6">No Expiring Memberships</td>
+</tr>
+
+<% } %>
+
+</tbody>
+
+</table>
+
+</div>
+
+</div>
+
+
+<script>
+
+const active = <%- JSON.stringify(counts?.activeMembers || 0) %>;
+const expired = <%- JSON.stringify(counts?.expiredMembers || 0) %>;
+
+const dataValues = [active, expired];
+
+const total = dataValues.reduce((a,b)=>a+b,0);
+
+/* Percentage Plugin */
+
+const percentagePlugin = {
+
+id:'percentagePlugin',
+
+afterDraw(chart){
+
+const {ctx} = chart;
+
+chart.data.datasets.forEach((dataset,i)=>{
+
+chart.getDatasetMeta(i).data.forEach((datapoint,index)=>{
+
+const {x,y} = datapoint.tooltipPosition();
+
+const value = dataset.data[index];
+
+const percentage = ((value/total)*100).toFixed(1) + "%";
+
+ctx.fillStyle="#fff";
+ctx.font="bold 14px Arial";
+ctx.textAlign="center";
+ctx.textBaseline="middle";
+
+ctx.fillText(percentage,x,y);
+
+});
+
+});
+
+}
+
+};
+
+new Chart(document.getElementById("membershipChart"),{
+
+type:"pie",
+
+data:{
+labels:["Active Members","Expired Memberships"],
+datasets:[{
+data:dataValues,
+backgroundColor:["#2563eb","#ef4444"]
+}]
+},
+
+options:{
+responsive:true,
+plugins:{
+legend:{
+position:"bottom"
+}
+}
+},
+
+plugins:[percentagePlugin]
+
+});
+
+</script>
+
+</body>
+</html>

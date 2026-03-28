@@ -1,0 +1,25 @@
+<%- include('partials/header', { data: data || {}, memberName: memberName }) %>
+
+<link rel="stylesheet" href="/memcontact.css">
+
+<div class="main-wrapper">
+
+    <div class="page-container">
+        <% if (contact) { %>
+
+            <div class="contact-card">
+                <p><strong>📱 WhatsApp:</strong> <%= contact.PRI_MOBILE %></p>
+                <p><strong>📞 Call:</strong> <%= contact.ALT_MOBILE %></p>
+                <p><strong>✉ Email:</strong> <%= contact.EMAIL %></p>
+                <p><strong>💬 Message:</strong> <%= contact.MESSAGE %></p>
+            </div>
+
+        <% } else { %>
+
+            <p>No contact information available.</p>
+
+        <% } %>
+    </div>
+</div>
+
+<%- include('partials/footer') %>

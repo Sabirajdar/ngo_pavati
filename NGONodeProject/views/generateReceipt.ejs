@@ -1,0 +1,220 @@
+<%- include('partials/header', { data: data || {}, memberName: memberName }) %>
+
+<link rel="stylesheet" href="/generate.css">
+<script src="/js/generate.js" defer></script>
+
+<div class="container">
+
+<h2 class="page-title">Create Receipt / पावती तयार करा</h2>
+
+<div class="card">
+
+<!-- Success Message -->
+<div id="successMessage" class="success-message" style="display:none;">
+    Receipt saved successfully / पावती यशस्वीरित्या जतन झाली.
+</div>
+
+<div class="section-title">Enter Details / माहिती भरा</div>
+
+<%
+let isExpired = true;
+
+if (membership && membership.END_DATE) {
+    const today = new Date();
+    const endDate = new Date(membership.END_DATE);
+
+    if (!isNaN(endDate)) {
+        isExpired = endDate < today;
+    }
+}
+%>
+
+<% if (!membership) { %>
+    <div style="color:red; font-weight:bold; margin-bottom:15px;">
+        ⚠️ No membership found / सदस्यता सापडली नाही.
+        <a href="/receipt/memcontact" style="color:blue; text-decoration:underline;">
+            Contact admin / प्रशासकाशी संपर्क साधा
+        </a>.
+    </div>
+
+<% } else if (isExpired) { %>
+    <div style="color:red; font-weight:bold; margin-bottom:15px;">
+        ⚠️ Your membership is expired / तुमची सदस्यता कालबाह्य झाली आहे.
+        <a href="/receipt/memcontact" style="color:blue; text-decoration:underline;">
+            Contact admin / प्रशासकाशी संपर्क साधा
+        </a>.
+    </div>
+<% } %>
+
+
+<form class="receipt-form" id="receiptForm" method="POST" action="/receipt/save">
+
+<fieldset <%= (!membership || isExpired) ? "disabled" : "" %>>
+<!-- Hidden Receipt Number -->
+<div class="form-group" style="display:none;">
+<label>Receipt Number</label>
+<input type="text" name="receipt_number" id="receipt_number" readonly>
+</div>
+
+<!-- Row 1 -->
+<div class="form-row">
+<div class="form-group">
+<label>Financial Year / आर्थिक वर्ष</label>
+<input type="text" name="financial_year" id="financial_year"
+placeholder="Example: 2025-26" required>
+</div>
+</div>
+
+<!-- Row 2 -->
+<div class="form-row">
+
+<div class="form-group">
+<label>Payment Date / पेमेंट तारीख</label>
+<input type="date" name="payment_date" id="payment_date" required>
+</div>
+
+<div class="form-group">
+<label>Receipt Date / पावती तारीख</label>
+<input type="date" name="receipt_date" id="receipt_date" required>
+</div>
+
+</div>
+
+<!-- Row 3 -->
+<div class="form-row">
+
+<div class="form-group">
+<label>Donor Name / देणगीदाराचे नाव</label>
+<input type="text" name="donor_name" id="donor_name"
+placeholder="Enter donor full name" required>
+</div>
+
+<div class="form-group">
+<label>PAN Number / पॅन क्रमांक</label>
+<input type="text" name="pan_number" id="pan"
+placeholder="Example: ABCDE1234F">
+</div>
+
+</div>
+
+<!-- Row 4 -->
+<div class="form-row">
+
+<div class="form-group">
+<label>Aadhaar Number / आधार क्रमांक</label>
+<input type="text" name="aadhar_number" id="aadhar"
+maxlength="12" placeholder="12 digit Aadhaar number">
+</div>
+
+<div class="form-group">
+<label>Mobile Number / मोबाईल क्रमांक</label>
+<input type="text" name="mobile_number" id="mobile_number"
+maxlength="10" placeholder="10 digit mobile number" required>
+</div>
+
+</div>
+
+<!-- Row 5 -->
+<div class="form-row">
+
+<div class="form-group">
+<label>Email Address / ईमेल पत्ता</label>
+<input type="email" name="email" id="email"
+placeholder="example@gmail.com" required>
+</div>
+
+<div class="form-group">
+<label>Address / पत्ता</label>
+<input type="text" name="address" id="address"
+placeholder="Enter full address">
+</div>
+
+</div>
+
+<!-- Row 6 -->
+<div class="form-row">
+
+<div class="form-group">
+<label>Donation Amount / देणगी रक्कम</label>
+<input type="number" name="donation_amount" id="amount"
+placeholder="Enter donation amount (₹)" min="1" required>
+</div>
+
+<div class="form-group">
+<label>Amount (In Words) / रक्कम (शब्दांत)</label>
+<input type="text" name="amount_in_words" id="amountWords"
+placeholder="Auto generated" readonly>
+</div>
+
+</div>
+
+<!-- Row 7 -->
+<div class="form-row">
+
+<div class="form-group">
+<label>Payment Mode / पेमेंट पद्धत</label>
+<select name="payment_mode" id="payment_mode" required>
+<option value="" disabled selected>Select payment mode / पेमेंट पद्धत निवडा</option>
+<option value="UPI">UPI / UPI</option>
+<option value="Net Banking">Net Banking / नेट बँकिंग</option>
+<option value="Cheque">Cheque / धनादेश</option>
+<option value="Cash">Cash / रोख</option>
+</select>
+</div>
+
+<div class="form-group">
+<label>Transaction ID / Reference No. /व्यवहार क्रमांक / संदर्भ क्रमांक</label>
+<input type="text" name="transaction_id" id="transaction_id"
+placeholder="Enter transaction ID or reference number">
+</div>
+
+</div>
+
+<!-- Row 8 -->
+<div class="form-row">
+
+<div class="form-group">
+<label>Purpose of Donation / देणगीचा उद्देश</label>
+<input type="text" name="purpose_of_donation" id="purpose_of_donation"
+placeholder="Example: Education Support">
+</div>
+
+<div class="form-group">
+<label>Received For / कशासाठी प्राप्त</label>
+<input type="text" name="received_for" id="received_for"
+placeholder="Example: NGO Welfare Program">
+</div>
+
+</div>
+
+<!-- BUTTONS -->
+<!-- <div class="text-center mt-4">
+<button type="submit" id="saveBtn" class="btn-primary">
+Save
+</button>
+
+<button type="button" id="downloadBtn" class="btn-success" style="display:none;">
+Download PDF
+</button>
+
+<button type="reset" class="btn-secondary">
+Reset
+</button>
+
+</div> -->
+<div class="d-flex gap-2">
+<button type="submit" id="saveBtn" class="btn btn-primary"
+<%= (!membership || isExpired) ? "disabled" : "" %>>
+Save / जतन करा
+</button>
+    <button type="button" id="downloadBtn" class="btn btn-success">Download PDF / पीडीएफ डाउनलोड करा</button>
+    <button type="reset" class="btn btn-secondary">Reset / रीसेट करा</button>
+</div>
+</fieldset>
+</form>
+
+</div>
+
+</div>
+
+<%- include('partials/footer') %>

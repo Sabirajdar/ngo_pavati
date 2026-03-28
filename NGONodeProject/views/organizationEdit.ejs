@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Organization Update</title>
+
+<style>
+/* SAME CSS (no change) */
+.org-maintenance{
+font-family:Arial;
+background:#f4f6f9;
+}
+.org-maintenance .container{
+width:95%;
+margin:20px auto;
+background:white;
+border:1px solid #ccc;
+padding-bottom:10px;
+}
+.org-maintenance .header{
+background:#9fb6cc;
+padding:10px;
+text-align:center;
+font-weight:bold;
+}
+.org-maintenance .buttons{
+padding:10px;
+}
+.org-maintenance .buttons button{
+padding:6px 15px;
+margin-right:10px;
+background:#3b82f6;
+border:none;
+color:white;
+cursor:pointer;
+}
+.org-maintenance .section-title{
+background:#9fb6cc;
+padding:6px;
+font-weight:bold;
+}
+.org-maintenance .grid{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:15px;
+padding:10px;
+}
+.form-group{
+display:flex;
+align-items:center;
+gap:10px;
+}
+.form-group label{
+width:170px;
+font-weight:bold;
+font-size:13px;
+}
+.form-group input{
+flex:1;
+padding:5px;
+border:1px solid #ccc;
+}
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+th,td{
+border:1px solid #ccc;
+padding:8px;
+text-align:center;
+}
+th{
+background:#e2e8f0;
+}
+.add-btn{
+margin:10px;
+padding:6px 15px;
+background:#3b82f6;
+color:white;
+border:none;
+cursor:pointer;
+}
+/* 🔥 MODAL FIX */
+.modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5); /* dark background */
+    justify-content:center;
+    align-items:center;
+    z-index:9999;
+}
+
+.modal-content{
+    background:#fff;
+    padding:20px;
+    width:400px;
+    border-radius:8px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.3);
+}
+
+/* form inside popup */
+.modal-content input{
+    width:100%;
+    padding:6px;
+    margin-top:5px;
+    margin-bottom:10px;
+}
+
+.modal-content button{
+    padding:6px 12px;
+    margin-right:10px;
+    background:#3b82f6;
+    border:none;
+    color:white;
+    cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<%
+function formatDate(d){
+return d ? new Date(d).toISOString().split('T')[0] : '';
+}
+
+function val(v){
+return v || '';
+}
+
+function getDoc(type){
+return documents.find(d=>d.DOCUMENT_TYPE===type);
+}
+%>
+
+<div class="org-maintenance">
+
+<form action="/organization/update/<%= org.ORG_ID %>" method="POST" enctype="multipart/form-data">
+
+<input type="hidden" name="member_id" value="<%= org.MEMBER_ID %>">
+
+<div class="container">
+
+<div class="header">Organization Maintenance</div>
+
+<div class="buttons">
+<button type="submit">Update</button>
+<button type="button" onclick="history.back()">Back</button>
+</div>
+
+<div class="section-title">Organization Details</div>
+
+<div class="grid">
+
+<div class="form-group">
+<label>Organization Name</label>
+<input name="org_name" value="<%= val(org.ORG_NAME) %>">
+</div>
+
+<div class="form-group">
+<label>Registration No</label>
+<input name="reg_no" value="<%= val(org.ORG_REG_NUMBER) %>">
+</div>
+
+<div class="form-group">
+<label>Registration Date</label>
+<input type="date" name="reg_date" value="<%= formatDate(org.ORG_REG_DATE) %>">
+</div>
+
+<div class="form-group">
+<label>80G No</label>
+<input name="reg_80g" value="<%= val(org.ORG_80G_REG_NUMBER) %>">
+</div>
+
+<div class="form-group">
+<label>80G Date</label>
+<input type="date" name="reg_80g_date" value="<%= formatDate(org.ORG_80G_REG_DATE) %>">
+</div>
+
+<div class="form-group">
+<label>12A No</label>
+<input name="reg_12a" value="<%= val(org.ORG_12A_REG_NUMBER) %>">
+</div>
+
+<div class="form-group">
+<label>12A Date</label>
+<input type="date" name="reg_12a_date" value="<%= formatDate(org.ORG_12A_REG_DATE) %>">
+</div>
+
+<div class="form-group">
+<label>Organization PAN</label>
+<input name="org_pan" value="<%= val(org.ORG_PAN) %>">
+</div>
+
+</div>
+<!-- CONTACT -->
+<div class="section-title">Contact Details</div>
+
+<div class="grid">
+
+<label>Primary Mobile</label>
+<input name="mobile" value="<%= val(org.PRI_MOBILE) %>">
+
+<label>Alternate Mobile</label>
+<input name="alt_mobile" value="<%= val(org.ALT_MOBILE) %>">
+
+<label>Landline</label>
+<input name="landline" value="<%= val(org.LANDLINE_NUMBER) %>">
+
+<label>Email</label>
+<input name="email" value="<%= val(org.EMAIL) %>">
+
+<label>Website</label>
+<input name="website" value="<%= val(org.WEBSITE) %>">
+
+</div>
+
+
+<!-- MEMBER -->
+<div class="section-title">Member Details</div>
+
+<div class="grid">
+
+<label>Full Name</label>
+<input name="member_name" value="<%= val(org.FULL_NAME) %>">
+
+<label>DOB</label>
+<input type="date" name="dob" value="<%= formatDate(org.MEM_DOB) %>">
+
+<label>UserName</label>
+<input name="username" value="<%= val(org.USER_NAME) %>">
+
+<label>Member PAN</label>
+<input name="member_pan" value="<%= val(org.PAN_NUMBER) %>">
+
+<label>Aadhar</label>
+<input name="aadhar" value="<%= val(org.AADHAR_NUMBER) %>">
+
+</div>
+
+
+<!-- ADDRESS -->
+<div class="section-title">Address</div>
+
+<div class="grid">
+
+<label>Address Line 1</label>
+<input name="address1" value="<%= val(org.ADD_LINE1) %>">
+
+<label>Address Line 2</label>
+<input name="address2" value="<%= val(org.ADD_LINE2) %>">
+
+<label>Address Line 3</label>
+<input name="address3" value="<%= val(org.ADD_LINE3) %>">
+
+<label>City</label>
+<input name="city" value="<%= val(org.CITY) %>">
+
+<label>District</label>
+<input name="dist" value="<%= val(org.DISTRICT) %>">
+
+<label>State</label>
+<input name="state" value="<%= val(org.STATE) %>">
+
+<label>Pin Code</label>
+<input name="pin" value="<%= val(org.PINCODE) %>">
+
+</div>
+</div>
+
+<!-- ================= MEMBERSHIP ================= -->
+
+<div class="container">
+
+<button type="button" class="add-btn" onclick="openPopup()">Add New</button>
+
+<div class="section-title">Membership Details</div>
+
+<table id="membershipTable">
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Registration</th>
+<th>Start</th>
+<th>End</th>
+<th>Status</th>
+<th>Amount</th>
+</tr>
+</thead>
+
+<tbody>
+
+<% memberships.forEach(m => { %>
+
+<tr>
+
+<td><%= m.MEMBERSHIP_ID %></td>
+
+<td>
+<input type="date" name="registration_date[]" value="<%= formatDate(m.REGISTRATION_DATE) %>">
+</td>
+
+<td>
+<input type="date" name="start_date[]" value="<%= formatDate(m.START_DATE) %>">
+</td>
+
+<td>
+<input type="date" name="end_date[]" value="<%= formatDate(m.END_DATE) %>">
+</td>
+
+<td>
+<select name="membership_status[]">
+<option value="Active" <%= m.MEMBERSHIP_STATUS=='Active'?'selected':'' %>>Active</option>
+<option value="Expired" <%= m.MEMBERSHIP_STATUS=='Expired'?'selected':'' %>>Expired</option>
+<option value="InProgress" <%= m.MEMBERSHIP_STATUS=='InProgress'?'selected':'' %>>InProgress</option>
+</select>
+</td>
+
+<td>
+<input type="number" name="membership_amount[]" value="<%= val(m.MEMBERSHIP_AMOUNT) %>">
+</td>
+
+<input type="hidden" name="membership_id[]" value="<%= m.MEMBERSHIP_ID %>">
+
+</tr>
+
+<% }) %>
+
+</tbody>
+
+</table>
+
+</div>
+
+<!-- ================= POPUP ================= -->
+
+<div class="modal" id="popup">
+
+<div class="modal-content">
+
+<h3>Add Membership</h3>
+
+<label>ID</label>
+<input type="text" id="membershipId" readonly><br><br>
+
+<label>Registration</label>
+<input type="date" id="regDate"><br><br>
+
+<label>Start</label>
+<input type="date" id="startDate"><br><br>
+
+<label>End</label>
+<input type="date" id="endDate"><br><br>
+
+<label>Amount</label>
+<input type="number" id="amount"><br><br>
+
+<button type="button" onclick="saveMembership()">Save</button>
+<button type="button" onclick="closePopup()">Cancel</button>
+
+</div>
+
+</div>
+
+<!-- DOCUMENTS -->
+
+<div class="container">
+
+<div class="section-title">Documents</div>
+
+<table>
+
+<tr>
+<th>Type</th>
+<th>Upload</th>
+<th>Download</th>
+</tr>
+
+<tr>
+<td>80G Certificate</td>
+<td>
+<input type="file" name="ORG_80G_CERTIFICATE" onchange="previewDoc(this)">
+</td>
+<td>
+<% let d1=getDoc('ORG_80G_CERTIFICATE'); %>
+<% if(d1){ %>
+<a href="/<%= d1.DOCUMENT_PATH.replace(/\\/g,'/') %>" target="_blank">Download</a>
+<% } else { %>Not Uploaded<% } %>
+</td>
+</tr>
+
+<tr>
+<td>12A Certificate</td>
+<td>
+<input type="file" name="ORG_12A_CERTIFICATE" onchange="previewDoc(this)">
+</td>
+<td>
+<% let d2=getDoc('ORG_12A_CERTIFICATE'); %>
+<% if(d2){ %>
+<a href="/<%= d2.DOCUMENT_PATH.replace(/\\/g,'/') %>" target="_blank">Download</a>
+<% } else { %>Not Uploaded<% } %>
+</td>
+</tr>
+
+<tr>
+<td>Org PAN</td>
+<td>
+<input type="file" name="ORG_PAN_CARD" onchange="previewDoc(this)">
+</td>
+<td>
+<% let d3=getDoc('ORG_PAN_CARD'); %>
+<% if(d3){ %>
+<a href="/<%= d3.DOCUMENT_PATH.replace(/\\/g,'/') %>" target="_blank">Download</a>
+<% } else { %>Not Uploaded<% } %>
+</td>
+</tr>
+
+<tr>
+<td>Logo</td>
+<td>
+<input type="file" name="ORG_LOGO" onchange="previewDoc(this)">
+</td>
+<td>
+<% let d4=getDoc('ORG_LOGO'); %>
+<% if(d4){ %>
+<a href="/<%= d4.DOCUMENT_PATH.replace(/\\/g,'/') %>" target="_blank">Download</a>
+<% } else { %>Not Uploaded<% } %>
+</td>
+</tr>
+
+<tr>
+<td>Signature</td>
+<td>
+<input type="file" name="ORG_SIGNATURE" onchange="previewDoc(this)">
+</td>
+<td>
+<% let d5=getDoc('ORG_SIGNATURE'); %>
+<% if(d5){ %>
+<a href="/<%= d5.DOCUMENT_PATH.replace(/\\/g,'/') %>" target="_blank">Download</a>
+<% } else { %>Not Uploaded<% } %>
+</td>
+</tr>
+
+<tr>
+<td>Member PAN</td>
+<td>
+<input type="file" name="MEMBER_PAN_CARD" onchange="previewDoc(this)">
+</td>
+<td>
+<% let d6=getDoc('MEMBER_PAN_CARD'); %>
+<% if(d6){ %>
+<a href="/<%= d6.DOCUMENT_PATH.replace(/\\/g,'/') %>" target="_blank">Download</a>
+<% } else { %>Not Uploaded<% } %>
+</td>
+</tr>
+</table>
+
+</div>
+<script>
+
+let nextMembershipId = null;
+
+async function openPopup(){
+
+document.getElementById("popup").style.display="flex";
+
+document.getElementById("regDate").value="";
+document.getElementById("startDate").value="";
+document.getElementById("endDate").value="";
+document.getElementById("amount").value="";
+
+try {
+    const res = await fetch("/membership-next-id");  
+    const data = await res.json();
+
+    nextMembershipId = data.membershipId;
+    document.getElementById("membershipId").value = nextMembershipId;
+
+} catch(err){
+    console.log("Error fetching ID", err);
+}
+
+}
+
+function closePopup(){
+document.getElementById("popup").style.display="none";
+}
+
+function saveMembership(){
+
+let id = document.getElementById("membershipId").value;
+let reg = document.getElementById("regDate").value;
+let start = document.getElementById("startDate").value;
+let end = document.getElementById("endDate").value;
+let amount = document.getElementById("amount").value;
+
+if(!reg || !start || !end || !amount){
+alert("Fill all fields");
+return;
+}
+
+/* STATUS AUTO */
+let today = new Date();
+let s = new Date(start);
+let e = new Date(end);
+
+today.setHours(0,0,0,0);
+s.setHours(0,0,0,0);
+e.setHours(0,0,0,0);
+
+let status="";
+if(today < s) status="InProgress";
+else if(today <= e) status="Active";
+else status="Expired";
+
+/* ADD ROW */
+let table = document.querySelector("#membershipTable tbody");
+
+let row = document.createElement("tr");
+
+row.innerHTML = `
+<td>${id}</td>
+
+<td><input type="date" name="registration_date[]" value="${reg}"></td>
+<td><input type="date" name="start_date[]" value="${start}"></td>
+<td><input type="date" name="end_date[]" value="${end}"></td>
+
+<td>
+<select name="membership_status[]" disabled>
+<option value="Active" ${status=='Active'?'selected':''}>Active</option>
+<option value="Expired" ${status=='Expired'?'selected':''}>Expired</option>
+<option value="InProgress" ${status=='InProgress'?'selected':''}>InProgress</option>
+</select>
+
+<!-- hidden field for backend (optional but safe) -->
+<input type="hidden" name="membership_status[]" value="${status}">
+</td>
+
+<td><input type="number" name="membership_amount[]" value="${amount}"></td>
+
+<input type="hidden" name="membership_id[]" value="">
+`;
+
+table.appendChild(row);
+
+nextMembershipId++;
+
+closePopup();
+}
+
+function previewDoc(input) {
+
+const file = input.files[0];
+if (!file) return;
+
+const row = input.closest("tr");
+const downloadCell = row.querySelector("td:last-child");
+
+const fileURL = URL.createObjectURL(file);
+
+downloadCell.innerHTML =
+`<a href="${fileURL}" target="_blank">Download (New)</a>`;
+}
+
+</script>
+
+</form>
+
+</div>
+
+</body>
+</html>

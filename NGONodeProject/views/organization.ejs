@@ -1,0 +1,586 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+
+<title>Organization Maintenance</title>
+
+<style>
+
+/* SCOPED CSS */
+
+.org-maintenance{
+font-family:Arial;
+background:#f4f6f9;
+}
+
+.org-maintenance .container{
+width:95%;
+margin:20px auto;
+background:white;
+border:1px solid #ccc;
+padding-bottom:10px;
+}
+
+.org-maintenance .header{
+background:#9fb6cc;
+padding:10px;
+text-align:center;
+font-weight:bold;
+}
+
+.org-maintenance .buttons{
+padding:10px;
+}
+
+.org-maintenance .buttons button{
+padding:6px 15px;
+margin-right:10px;
+background:#3b82f6;
+border:none;
+color:white;
+cursor:pointer;
+}
+
+.org-maintenance .section-title{
+background:#9fb6cc;
+padding:6px;
+font-weight:bold;
+}
+
+.org-maintenance .grid{
+display:grid;
+grid-template-columns:1fr 1fr 1fr;
+gap:15px;
+padding:10px;
+}
+
+.org-maintenance .form-group{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.org-maintenance .form-group label{
+width:170px;
+font-weight:bold;
+font-size:13px;
+}
+
+.org-maintenance .form-group input,
+.org-maintenance .form-group select{
+flex:1;
+padding:5px;
+border:1px solid #ccc;
+}
+
+.org-maintenance table{
+width:100%;
+border-collapse:collapse;
+margin-top:10px;
+}
+
+.org-maintenance th,
+.org-maintenance td{
+border:1px solid #ccc;
+padding:8px;
+text-align:center;
+}
+
+.org-maintenance th{
+background:#e2e8f0;
+}
+
+.org-maintenance .add-btn{
+margin:10px;
+padding:6px 15px;
+background:#3b82f6;
+color:white;
+border:none;
+cursor:pointer;
+}
+
+.modal{
+display:none;
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,0.5);
+justify-content:center;
+align-items:center;
+}
+
+.modal-content{
+background:white;
+padding:20px;
+width:350px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="org-maintenance">
+
+<form action="/organization/save" method="POST" enctype="multipart/form-data">
+
+<!-- ================= DIV 1 ================= -->
+
+<div class="container">
+
+<div class="header">Organization Maintenance</div>
+
+<div class="buttons">
+<button type="submit">Save</button>
+<button type="reset">Reset</button>
+<button type="button" onclick="history.back()">Back</button>
+</div>
+
+<div class="section-title">Organization Details</div>
+
+<div class="grid">
+
+<div class="form-group">
+<label>*Organization Name</label>
+<input name="org_name">
+</div>
+
+<div class="form-group">
+<label>Org Registration No</label>
+<input name="reg_no">
+</div>
+
+<div class="form-group">
+<label>Org Registration Date</label>
+<input type="date" name="reg_date">
+</div>
+
+<div class="form-group">
+<label>80G Registration No</label>
+<input name="reg_80g">
+</div>
+
+<div class="form-group">
+<label>80G Registration Date</label>
+<input type="date" name="reg_80g_date">
+</div>
+
+<div class="form-group">
+<label>12A Registration No</label>
+<input name="reg_12a">
+</div>
+
+<div class="form-group">
+<label>12A Registration Date</label>
+<input type="date" name="reg_12a_date">
+</div>
+
+<div class="form-group">
+<label>Organization PAN</label>
+<input name="org_pan">
+</div>
+
+</div>
+
+<!-- CONTACT -->
+
+<div class="section-title">Contact Details</div>
+
+<div class="grid">
+
+<div class="form-group">
+<label>Primary Mobile</label>
+<input name="mobile">
+</div>
+
+<div class="form-group">
+<label>Alternate Mobile</label>
+<input name="alt_mobile">
+</div>
+
+<div class="form-group">
+<label>Landline</label>
+<input name="landline">
+</div>
+
+<div class="form-group">
+<label>Email</label>
+<input name="email">
+</div>
+
+<div class="form-group">
+<label>Website</label>
+<input name="website">
+</div>
+
+</div>
+
+<!-- MEMBER -->
+
+<div class="section-title">Member Details</div>
+
+<div class="grid">
+
+<div class="form-group">
+<label>Full Name</label>
+<input name="member_name">
+</div>
+
+<div class="form-group">
+<label>DOB</label>
+<input type="date" name="dob">
+</div>
+
+<div class="form-group">
+<label>UserName</label>
+<input name="username" required>
+</div>
+
+<div class="form-group">
+<label>Member PAN</label>
+<input name="member_pan">
+</div>
+
+<div class="form-group">
+<label>Aadhar</label>
+<input name="aadhar">
+</div>
+
+<div class="form-group">
+<label>Password</label>
+<input type="password" name="password">
+</div>
+
+</div>
+
+<!-- ADDRESS -->
+
+<div class="section-title">Address Details</div>
+
+<div class="grid">
+
+<div class="form-group">
+<label>Address Line 1</label>
+<input name="address1">
+</div>
+
+<div class="form-group">
+<label>Address Line 2</label>
+<input name="address2">
+</div>
+
+<div class="form-group">
+<label>Address Line 3</label>
+<input name="address3">
+</div>
+
+<div class="form-group">
+<label>City</label>
+<input name="city">
+</div>
+
+<div class="form-group">
+<label>District</label>
+<input name="dist">
+</div>
+
+<div class="form-group">
+<label>State</label>
+<input name="state">
+</div>
+
+<div class="form-group">
+<label>Pin Code</label>
+<input name="pin">
+</div>
+
+</div>
+
+</div>
+
+
+<!-- ================= DIV 2 ================= -->
+
+<div class="container">
+
+<button type="button" class="add-btn" onclick="openPopup()">Add New</button>
+
+<div class="section-title">Membership Details</div>
+
+<table id="membershipTable">
+
+<thead>
+<tr>
+<th>Membership ID</th>
+<th>Registration Date</th>
+<th>Start Date</th>
+<th>End Date</th>
+<th>Status</th>
+<th>Paid Amount</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+</div>
+
+
+<!-- ================= DIV 3 ================= -->
+
+<div class="container">
+
+<div class="section-title">Documents Details</div>
+
+<table>
+
+<thead>
+<tr>
+<th>Document Type</th>
+<th>Upload</th>
+<th>Download</th>
+</tr>
+</thead>
+
+<tbody>
+
+<tr>
+<td>80G Certificate</td>
+<td>
+<input type="file" name="documents" onchange="previewFile(this,'80g_download')">
+<input type="hidden" name="document_type[]" value="ORG_80G_CERTIFICATE">
+</td>
+<td id="80g_download">Not Uploaded</td>
+</tr>
+
+<tr>
+<td>12A Certificate</td>
+<td>
+<input type="file" name="documents" onchange="previewFile(this,'12a_download')">
+<input type="hidden" name="document_type[]" value="ORG_12A_CERTIFICATE">
+</td>
+<td id="12a_download">Not Uploaded</td>
+</tr>
+
+<tr>
+<td>Org PAN</td>
+<td>
+<input type="file" name="documents" onchange="previewFile(this,'pan_download')">
+<input type="hidden" name="document_type[]" value="ORG_PAN_CARD">
+</td>
+<td id="pan_download">Not Uploaded</td>
+</tr>
+
+<tr>
+<td>Logo</td>
+<td>
+<input type="file" name="documents" onchange="previewFile(this,'logo_download')">
+<input type="hidden" name="document_type[]" value="ORG_LOGO">
+</td>
+<td id="logo_download">Not Uploaded</td>
+</tr>
+
+<tr>
+<td>Signature</td>
+<td>
+<input type="file" name="documents" onchange="previewFile(this,'sign_download')">
+<input type="hidden" name="document_type[]" value="ORG_SIGNATURE">
+</td>
+<td id="sign_download">Not Uploaded</td>
+</tr>
+
+<tr>
+<td>Member PAN</td>
+<td>
+<input type="file" name="documents" onchange="previewFile(this,'member_pan_download')">
+<input type="hidden" name="document_type[]" value="MEMBER_PAN_CARD">
+</td>
+<td id="member_pan_download">Not Uploaded</td>
+</tr>
+
+</tbody>
+
+</table>
+
+</div>
+
+
+
+<!-- MEMBERSHIP POPUP -->
+
+<div class="modal" id="popup">
+
+<div class="modal-content">
+
+<h3>Add Membership</h3>
+
+<label>Membership ID</label>
+<input type="text" id="membershipId" readonly><br><br>
+
+<label>Registration Date</label>
+<input type="date" id="regDate"><br><br>
+
+<label>Start Date</label>
+<input type="date" id="startDate"><br><br>
+
+<label>End Date</label>
+<input type="date" id="endDate"><br><br>
+
+<label>Paid Amount</label>
+<input type="number" id="amount"><br><br>
+
+<button type="button" onclick="saveMembership()">Save</button>
+<button type="button" onclick="closePopup()">Cancel</button>
+
+</div>
+
+</div>
+<script>
+
+let nextMembershipId = null;
+
+async function openPopup(){
+
+document.getElementById("popup").style.display="flex";
+
+/* CLEAR OLD VALUES */
+
+document.getElementById("regDate").value="";
+document.getElementById("startDate").value="";
+document.getElementById("endDate").value="";
+document.getElementById("amount").value="";
+
+try{
+
+/* FETCH MEMBERSHIP ID */
+
+if(nextMembershipId === null){
+
+const response = await fetch("/membership/next-id");
+const data = await response.json();
+
+nextMembershipId = data.membershipId;
+
+}
+
+document.getElementById("membershipId").value = nextMembershipId;
+
+}catch(err){
+
+console.log("Error fetching membership ID", err);
+
+}
+
+}
+
+
+function closePopup(){
+document.getElementById("popup").style.display="none";
+}
+
+
+function saveMembership(){
+
+    let membershipId = document.getElementById("membershipId").value;
+    let reg = document.getElementById("regDate").value;
+    let start = document.getElementById("startDate").value;
+    let end = document.getElementById("endDate").value;
+    let amount = document.getElementById("amount").value;
+
+    /* VALIDATION */
+
+    if(!reg || !start || !end || !amount){
+        alert("Please fill all fields");
+        return;
+    }
+
+    /* STATUS LOGIC */
+
+    let today = new Date();
+    let startDate = new Date(start);
+    let endDate = new Date(end);
+
+    today.setHours(0,0,0,0);
+    startDate.setHours(0,0,0,0);
+    endDate.setHours(0,0,0,0);
+
+    let status = "";
+
+    if(today < startDate){
+        status = "InProgress";
+    }
+    else if(today >= startDate && today <= endDate){
+        status = "Active";
+    }
+    else{
+        status = "Inactive";
+    }
+
+    /* INSERT ROW INTO TABLE */
+
+    let table = document.querySelector("#membershipTable tbody");
+
+    let row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td>${membershipId}</td>
+        <td>${reg}</td>
+        <td>${start}</td>
+        <td>${end}</td>
+        <td>${status}</td>
+        <td>${amount}</td>
+
+        <input type="hidden" name="membership_id[]" value="${membershipId}">
+        <input type="hidden" name="registration_date[]" value="${reg}">
+        <input type="hidden" name="start_date[]" value="${start}">
+        <input type="hidden" name="end_date[]" value="${end}">
+        <input type="hidden" name="membership_status[]" value="${status}">
+        <input type="hidden" name="membership_amount[]" value="${amount}">
+    `;
+
+    table.appendChild(row);
+
+    /* INCREMENT FOR NEXT LOCAL ENTRY */
+
+    nextMembershipId++;
+
+    document.getElementById("membershipId").value = nextMembershipId;
+
+    closePopup();
+
+}
+
+function previewFile(input, downloadId){
+
+const file = input.files[0];
+
+if(!file){
+return;
+}
+
+const url = URL.createObjectURL(file);
+
+const downloadCell = document.getElementById(downloadId);
+
+downloadCell.innerHTML = `
+<a href="${url}" target="_blank" download>
+<button type="button">Download</button>
+</a>
+`;
+
+}
+
+
+</script>
+
+
+
+
+</body>
+</html>
+

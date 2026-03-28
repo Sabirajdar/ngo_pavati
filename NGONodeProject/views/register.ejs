@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Member Registration</title>
+<style>
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", sans-serif;
+}
+body {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f4f6fb;
+}
+
+/* ========================= */
+/*        MAIN CONTAINER     */
+/* ========================= */
+
+.login-container {
+    width: 650px;
+    max-width: 95%;
+    padding: 50px 60px;
+    border-radius: 12px;
+    background: #ffffff;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+    transition: 0.3s ease;
+}
+
+.login-container:hover {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+}
+
+/* ========================= */
+/*          TITLE            */
+/* ========================= */
+
+.page-title {
+    text-align: center;
+    color: #000000;
+    font-size: 22px;
+    font-weight: 600;
+    margin-bottom: 40px;
+}
+
+/* ========================= */
+/*        FORM ROW GRID      */
+/* ========================= */
+
+.form-row {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.form-row label {
+    color: #000000;
+    font-weight: 500;
+}
+
+.form-row input {
+    padding: 14px 16px;
+    border: 1px solid #e0e0e0;
+    border-radius: 10px;
+    background-color: #f7f8fc;
+    color: #000000;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s ease;
+}
+
+.form-row input::placeholder {
+    color: #777;
+}
+
+.form-row input:focus {
+    border-color: #1F3C88;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(31, 60, 136, 0.08);
+}
+
+/* ========================= */
+/*        BUTTON SECTION     */
+/* ========================= */
+
+.button-group {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-top: 30px;
+}
+
+button {
+    padding: 10px 35px;
+    border: 2px solid #1F3C88;
+    background-color: #1F3C88;
+    color: #FFFFFF;
+    font-weight: 600;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+button:hover {
+    background: #FFF;
+    color: #1F3C88;
+    transform: translateY(-3px);
+}
+
+/* ========================= */
+/*      BOTTOM LINK TEXT     */
+/* ========================= */
+
+.signup-text {
+    margin-top: 25px;
+    text-align: center;
+    font-size: 14px;
+    color: #555;
+}
+
+.signup-text a {
+    color: #1F3C88;
+    font-weight: 600;
+    text-decoration: none;
+    margin-left: 5px;
+    transition: 0.3s ease;
+}
+
+.signup-text a:hover {
+    text-decoration: underline;
+    color: #142c63;
+}
+
+/* ========================= */
+/*        MEDIA QUERY        */
+/* ========================= */
+
+/* Tablet */
+@media (max-width: 768px) {
+    .login-container {
+        padding: 40px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .button-group {
+        gap: 20px;
+    }
+}
+
+/* Mobile */
+@media (max-width: 480px) {
+    .login-container {
+        padding: 25px;
+    }
+
+    .page-title {
+        font-size: 18px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    button {
+        width: 100%;
+    }
+
+    .signup-text {
+        text-align: center;
+    }
+}
+    </style>
+</head>
+<body>
+
+<div class="login-container">
+
+    <h2 class="page-title">Member Registration</h2>
+
+    <form action="/savereg" method="post">
+
+        <div class="form-row">
+            <label>Username</label>
+            <input type="text" name="username" placeholder="Enter username" required>
+        </div>
+
+        <div class="form-row">
+            <label>Password</label>
+            <input type="password" name="password" placeholder="Enter password" required>
+        </div>
+
+         <div class="form-row">
+                <label>Status</label>
+                <select name="status">
+                    <option value="Active">Active</option>
+                    <option value="Inactive">Inactive</option>
+                </select>
+        </div>
+
+        <div class="button-group">
+            <button type="submit">Register</button>
+            <button type="reset">Cancel</button>
+        </div>
+
+        <p class="signup-text">
+            Already have an account?
+            <a href="/">Login</a>
+        </p>
+
+    </form>
+
+</div>
+
+</body>
+</html>
