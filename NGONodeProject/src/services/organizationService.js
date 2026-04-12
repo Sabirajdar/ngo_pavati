@@ -130,3 +130,7 @@ exports.getOrganizationsForExport = async (criteria) => {
 return await orgModel.getOrganizationsForExport(criteria);
 
 };
+
+
+
+

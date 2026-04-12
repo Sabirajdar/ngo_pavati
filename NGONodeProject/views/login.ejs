@@ -6,135 +6,178 @@
 <title>DigitalPavatiBook</title>
 
 <style>
+    /* APPLY ONLY TO LOGIN PAGE */
 
-/* APPLY ONLY TO LOGIN PAGE */
-
-.login-page *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:"Segoe UI", sans-serif;
+.login-page * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Segoe UI", sans-serif;
 }
 
-.login-page{
-background:#f4f6fb;
-display:flex;
-justify-content:center;
-align-items:center;
-min-height:100vh;
+.login-page {
+  background: #f4f6fb;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 10px; /* prevents edge cut on mobile */
 }
 
 /* MAIN CONTAINER */
 
-.login-page .container{
-width:650px;
-max-width:95%;
+.login-page .container {
+  max-width: 650px;
+  width: 100%;
 }
 
 /* LOGIN BOX */
 
-.login-page .login-box{
-background:#ffffff;
-border-radius:12px;
-box-shadow:0 10px 25px rgba(0,0,0,0.08);
-padding:40px;
-transition:0.3s ease;
+.login-page .login-box {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+  padding: 40px;
+  transition: 0.3s ease;
 }
 
-.login-page .login-box:hover{
-box-shadow:0 15px 35px rgba(0,0,0,0.12);
+.login-page .login-box:hover {
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
 }
 
 /* HEADER */
 
-.login-page .header{
-background:#1F3C88;
-color:#fff;
-text-align:center;
-padding:12px;
-border-radius:8px;
-margin-bottom:30px;
-font-size:18px;
+.login-page .header {
+  background: #1F3C88;
+  color: #fff;
+  text-align: center;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  font-size: 18px;
 }
 
 /* FORM */
 
-.login-page .form-row{
-display:grid;
-grid-template-columns:150px 1fr;
-align-items:center;
-margin-bottom:20px;
+.login-page .form-row {
+  display: grid;
+  grid-template-columns: 150px 1fr;
+  align-items: center;
+  margin-bottom: 20px;
+  gap: 10px;
 }
 
-.login-page .form-row label{
-font-weight:500;
+.login-page .form-row label {
+  font-weight: 500;
 }
 
-.login-page .form-row input{
-padding:12px 14px;
-border:1px solid #e0e0e0;
-border-radius:8px;
-background:#f7f8fc;
-outline:none;
+.login-page .form-row input {
+  padding: 12px 14px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: #f7f8fc;
+  outline: none;
+  width: 100%;
 }
 
-.login-page .form-row input:focus{
-border-color:#1F3C88;
+.login-page .form-row input:focus {
+  border-color: #1F3C88;
 }
 
 /* BUTTON */
 
-.login-page .button-group{
-text-align:center;
-margin-top:25px;
+.login-page .button-group {
+  text-align: center;
+  margin-top: 25px;
 }
 
-.login-page button{
-padding:10px 30px;
-border-radius:6px;
-border:2px solid #1F3C88;
-background:#1F3C88;
-color:white;
-font-weight:600;
-cursor:pointer;
+.login-page button {
+  padding: 10px 30px;
+  border-radius: 6px;
+  border: 2px solid #1F3C88;
+  background: #1F3C88;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
 }
 
-.login-page button:hover{
-background:#fff;
-color:#1F3C88;
+.login-page button:hover {
+  background: #fff;
+  color: #1F3C88;
 }
 
 /* CONTACT BOX */
 
-.login-page .contact-box{
-margin-top:25px;
-background:#ffffff;
-border-radius:10px;
-padding:20px;
-text-align:center;
-color:#d9534f;
-box-shadow:0 5px 15px rgba(0,0,0,0.05);
+.login-page .contact-box {
+  margin-top: 25px;
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  color: #d9534f;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
 /* NEWS BOX */
 
-.login-page .news-box{
-margin-top:25px;
-background:#ffffff;
-border-radius:10px;
-box-shadow:0 5px 15px rgba(0,0,0,0.05);
+.login-page .news-box {
+  margin-top: 25px;
+  background: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
 }
 
-.login-page .news-box h3{
-background:#e6d3c0;
-padding:10px;
-text-align:center;
+.login-page .news-box h3 {
+  background: #e6d3c0;
+  padding: 10px;
+  text-align: center;
 }
 
-.login-page .news-box ol{
-padding:20px 30px;
+.login-page .news-box ol {
+  padding: 20px 30px;
 }
 
+/* ========================= */
+/* MOBILE RESPONSIVE */
+/* ========================= */
+
+@media (max-width: 768px) {
+
+  .login-page .login-box {
+    padding: 20px;
+  }
+
+  /* stack form vertically */
+  .login-page .form-row {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .login-page .form-row label {
+    font-size: 14px;
+  }
+
+  .login-page .form-row input {
+    font-size: 14px;
+  }
+
+  /* full width button */
+  .login-page button {
+    width: 100%;
+  }
+
+  /* reduce padding */
+  .login-page .contact-box,
+  .login-page .news-box {
+    padding: 15px;
+  }
+
+  .login-page .news-box ol {
+    padding: 15px;
+  }
+
+}
 </style>
 
 </head>

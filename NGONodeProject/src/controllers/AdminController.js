@@ -169,11 +169,17 @@ exports.validateUser = async (req, res) => {
     }
 
     // 4️⃣ Compare password
-    const isMatch = bcrypt.compareSync(password, user.PASSWORD);
+const cleanPassword = password.trim();
+console.log("Entered:", password.trim());
+console.log("Stored:", user.PASSWORD);
+const isMatch = bcrypt.compareSync(cleanPassword, user.PASSWORD);
+console.log("Match:", isMatch);
 
-    if (!isMatch) {
-      return res.status(401).send("Incorrect password");
-    }
+if (!isMatch) {
+  console.log("Entered:", cleanPassword);
+  console.log("Stored Hash:", user.PASSWORD);
+  return res.status(401).send("Incorrect password");
+}
 
     // 5️⃣ Create JWT
     const token = jwt.sign(
@@ -208,33 +214,59 @@ exports.validateUser = async (req, res) => {
     return res.status(500).send("Internal Server Error");
   }
 };
+
+// exports.resetPasswordCtrl = async (req, res) => {
+//   try {
+//     // Get logged-in user from token
+//     const token = req.cookies.token;
+//     if (!token) return res.redirect("/login");
+
+//     const jwt = require("jsonwebtoken");
+//     const user = jwt.verify(token, "11$$$66&&&&4444"); // same secret you used for login
+
+//     const { newPassword } = req.body;
+//     if (!newPassword) {
+//       return res.render("ResetPassword.ejs", { message: "Password is required!" });
+//     }
+
+//     const bcrypt = require("bcryptjs");
+//     const hashedPassword = bcrypt.hashSync(newPassword, 8);
+
+//     const result = await regService.updatePasswordById(user.id, hashedPassword);
+
+//     res.render("login.ejs", { message: "Password reset successfully!" });
+
+//   } catch (err) {
+//     console.error("Reset Password Error:", err);
+//     res.render("ResetPassword.ejs", { message: "Internal Server Error" });
+//   }
+// };
+
+
 exports.resetPasswordCtrl = async (req, res) => {
   try {
-    // Get logged-in user from token
     const token = req.cookies.token;
     if (!token) return res.redirect("/login");
 
-    const jwt = require("jsonwebtoken");
-    const user = jwt.verify(token, "11$$$66&&&&4444"); // same secret you used for login
+    const user = jwt.verify(token, "11$$$66&&&&4444");
 
     const { newPassword } = req.body;
+
     if (!newPassword) {
       return res.render("ResetPassword.ejs", { message: "Password is required!" });
     }
 
-    const bcrypt = require("bcryptjs");
-    const hashedPassword = bcrypt.hashSync(newPassword, 8);
+    const hashedPassword = bcrypt.hashSync(newPassword.trim(), 10);
 
-    const result = await regService.updatePasswordById(user.id, hashedPassword);
+    await regService.updatePasswordById(user.id, hashedPassword);
 
     res.render("login.ejs", { message: "Password reset successfully!" });
 
   } catch (err) {
-    console.error("Reset Password Error:", err);
+    console.error(err);
     res.render("ResetPassword.ejs", { message: "Internal Server Error" });
   }
 };
-
 
 exports.adminCtrl = async (req, res) => {
 
@@ -289,13 +321,35 @@ exports.editAdminForm = async (req, res) => {
   }
 };
 
+// exports.updateAdmin = async (req, res) => {
+//   try {
+//     const { id, username, password, status } = req.body;
+
+//     await regService.updateAdminById(id, username, password, status);
+
+//     res.redirect("/admin");
+//   } catch (err) {
+//     console.error("Update Admin Error:", err);
+//     res.send("Internal Server Error");
+//   }
+// };
+
+
 exports.updateAdmin = async (req, res) => {
   try {
     const { id, username, password, status } = req.body;
 
-    await regService.updateAdminById(id, username, password, status);
+    let hashedPassword = password;
+
+    // only hash if password is changed
+    if (password) {
+      hashedPassword = bcrypt.hashSync(password.trim(), 10);
+    }
+
+    await regService.updateAdminById(id, username, hashedPassword, status);
 
     res.redirect("/admin");
+
   } catch (err) {
     console.error("Update Admin Error:", err);
     res.send("Internal Server Error");
@@ -390,6 +444,9 @@ exports.newsCtrl = async (req, res) => {
 exports.contactCtrl = (req, res) => {
   res.render("contact.ejs");
 };
+
+
+
 
 
 

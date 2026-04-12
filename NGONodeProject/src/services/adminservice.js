@@ -26,11 +26,18 @@ exports.getAdminById = async (id) => {
 };
 
 exports.updateAdminById = async (id, username, password, status) => {
-  const bcrypt = require("bcryptjs");
-  const hashedPassword = bcrypt.hashSync(password, 8);
-  const regModel = require("../models/adminmodel.js");
+  let updatedPassword;
 
-  return await regModel.updateAdminById(id, username, hashedPassword, status);
+  if (password && password.trim() !== "") {
+    // ✅ new password entered
+    updatedPassword = bcrypt.hashSync(password, 8);
+  } else {
+    // ✅ keep old password
+    const existingUser = await regModel.getAdminById(id);
+    updatedPassword = existingUser.PASSWORD;
+  }
+
+  return await regModel.updateAdminById(id, username, updatedPassword, status);
 };
 
 exports.getAllAdmins = async () => {

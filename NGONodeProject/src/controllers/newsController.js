@@ -63,7 +63,7 @@ exports.updateNews = async (req, res) => {
 
     await newsService.updateNews(id, title, description, status);
 
-    res.redirect("/");
+res.redirect("/news");
 
   } catch (err) {
     console.log(err);

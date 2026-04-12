@@ -59,7 +59,7 @@ console.log(err);
 return res.status(500).send("Database Error");
 }
 
-res.render("orgSearch", { 
+res.render("orgSearch", {
 results,
 query: criteria
 });
@@ -74,7 +74,7 @@ exports.getOrgDetails = (req, res) => {
 const orgName = req.query.org_name;
 
 const sql = `
-SELECT 
+SELECT
 o.ORG_NAME,
 md.PRI_MOBILE,
 md.EMAIL,
@@ -231,6 +231,19 @@ data.dob || null,
 data.member_id
 ]);
 
+/* 🔐 PASSWORD UPDATE (NEW CODE) */
+if (data.password && data.password.trim() !== "") {
+  const bcrypt = require("bcryptjs");
+
+  const hashedPassword = bcrypt.hashSync(data.password.trim(), 10);
+
+  await db.promise().query(
+    "UPDATE users SET PASSWORD=? WHERE USER_ID=?",
+    [hashedPassword, data.member_id]
+  );
+}
+console.log("Entered Password:", data.password);
+console.log("Member ID:", data.member_id);
 /* MEMBER DETAILS */
 await db.promise().query(`
 UPDATE member_details SET

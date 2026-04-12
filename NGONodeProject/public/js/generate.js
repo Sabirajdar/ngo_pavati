@@ -160,50 +160,77 @@ document.addEventListener("DOMContentLoaded", function () {
 
     /* ---------------- Download PDF ---------------- */
 
+    // if (downloadBtn) {
+
+    //     downloadBtn.addEventListener("click", async function () {
+
+    //         const receiptNo = receiptNumberInput.value.trim();
+
+    //         if (!receiptNo) {
+    //             alert("Please save the receipt first!");
+    //             return;
+    //         }
+
+    //         try {
+
+    //             const response = await fetch(`/receipt/${receiptNo}/pdf`, {
+    //                 method: "GET",
+    //                 credentials: "include"
+    //             });
+
+    //             if (!response.ok) {
+    //                 const text = await response.text();
+    //                 throw new Error(text || "PDF not found");
+    //             }
+
+    //             const blob = await response.blob();
+    //             const url = window.URL.createObjectURL(blob);
+
+    //             const link = document.createElement("a");
+    //             link.href = url;
+    //             link.download = `Receipt_${receiptNo}.pdf`;
+
+    //             document.body.appendChild(link);
+    //             link.click();
+    //             document.body.removeChild(link);
+
+    //             window.URL.revokeObjectURL(url);
+
+    //         } catch (err) {
+    //             console.error("PDF Download Error:", err);
+    //             alert("Unable to download PDF. Please try again.");
+    //         }
+
+    //     });
+
+    // }
+
     if (downloadBtn) {
 
-        downloadBtn.addEventListener("click", async function () {
+    downloadBtn.addEventListener("click", function () {
 
-            const receiptNo = receiptNumberInput.value.trim();
+        const receiptNo = receiptNumberInput.value.trim();
 
-            if (!receiptNo) {
-                alert("Please save the receipt first!");
-                return;
-            }
+        if (!receiptNo) {
+            alert("Please save the receipt first!");
+            return;
+        }
 
-            try {
+        try {
+            // ✅ Mobile + Desktop compatible
+            const pdfUrl = `/receipt/${receiptNo}/pdf`;
 
-                const response = await fetch(`/receipt/${receiptNo}/pdf`, {
-                    method: "GET",
-                    credentials: "include"
-                });
+            // Open PDF in new tab (works on mobile)
+            window.open(pdfUrl, "_blank");
 
-                if (!response.ok) {
-                    const text = await response.text();
-                    throw new Error(text || "PDF not found");
-                }
+        } catch (err) {
+            console.error("PDF Download Error:", err);
+            alert("Unable to download PDF. Please try again.");
+        }
 
-                const blob = await response.blob();
-                const url = window.URL.createObjectURL(blob);
+    });
 
-                const link = document.createElement("a");
-                link.href = url;
-                link.download = `Receipt_${receiptNo}.pdf`;
-
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-
-                window.URL.revokeObjectURL(url);
-
-            } catch (err) {
-                console.error("PDF Download Error:", err);
-                alert("Unable to download PDF. Please try again.");
-            }
-
-        });
-
-    }
+}
 
     /* ---------------- Reset Form ---------------- */
 
