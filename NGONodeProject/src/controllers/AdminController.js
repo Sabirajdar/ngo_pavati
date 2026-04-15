@@ -1,4 +1,4 @@
-const regService = require("../services/adminservice.js");
+const regService = require("../services/adminservice.js"); 
 const contactService = require("../services/contactservice.js");
 const newsService = require("../services/newsService.js");
 const dashboardService = require("../services/dashboardservice");
@@ -64,7 +64,7 @@ exports.createFirstAdmin = async (req, res) => {
     await new Promise((resolve, reject) => {
       db.query(
         `INSERT INTO users (USER_USERNAME, PASSWORD, ROLE, STATUS)
-         VALUES (?, ?, 'ADMIN', ?)`,
+        VALUES (?, ?, 'ADMIN', ?)`,
         [username, hashedPassword, status],
         (err, result) => {
           if (err) reject(err);

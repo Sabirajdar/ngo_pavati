@@ -1,5 +1,5 @@
-const orgService = require("../services/organizationService");
-const orgModel = require("../models/organizationmodel");
+const orgService = require("../services/organizationService.js");
+const orgModel = require("../models/organizationModel.js");
 const db = require("../config/db");
 
 // SAVE ORGANIZATION
