@@ -263,13 +263,27 @@ exports.generateReceipt = async (req, res) => {
 console.log("LOGO PATH:", data.logo);
 console.log("SIGN PATH:", data.signature);
     // ---------------- Images ----------------
-    let logoUrl = data.logo 
-  ? `http://localhost:7777/${data.logo.replace(/\\/g, "/")}` 
+//     let logoUrl = data.logo 
+//   ? `http://localhost:7777/${data.logo.replace(/\\/g, "/")}` 
+//   : null;
+
+// let signatureUrl = data.signature 
+//   ? `http://localhost:7777/${data.signature.replace(/\\/g, "/")}` 
+//   : null;
+
+
+
+let logoUrl = data.logo
+  ? `https://pavatibook.online/${data.logo.replace(/\\/g, "/")}`
   : null;
 
-let signatureUrl = data.signature 
-  ? `http://localhost:7777/${data.signature.replace(/\\/g, "/")}` 
+let signatureUrl = data.signature
+  ? `https://pavatibook.online/${data.signature.replace(/\\/g, "/")}`
   : null;
+
+
+
+
     // ---------------- Template Data ----------------
     const templateData = {
       logoUrl,
@@ -327,20 +341,115 @@ let signatureUrl = data.signature
 
     // ---------------- Render HTML ----------------
     const templatePath = path.join(__dirname, "../view/receiptTemplate.ejs");
-    const html = await ejs.renderFile(templatePath, templateData);
+    //const templatePath = path.join(__dirname, "../views/receiptTemplate.ejs");
 
-    // ---------------- Generate PDF ----------------
-    const browser = await puppeteer.launch({ headless: true });
-    const page = await browser.newPage();
+const html = await ejs.renderFile(templatePath, templateData);
 
-    await page.setContent(html, { waitUntil: "networkidle0" });
+const browser = await puppeteer.launch({
+  headless: "new",
+  executablePath:
+    process.env.PUPPETEER_EXECUTABLE_PATH || puppeteer.executablePath(),
+  args: [
+    "--no-sandbox",
+    "--disable-setuid-sandbox",
+    "--disable-dev-shm-usage",
+    "--disable-gpu"
+  ]
+});
 
-    const pdf = await page.pdf({
-      format: "A4",
-      printBackground: true
-    });
+const page = await browser.newPage();
 
-    await browser.close();
+await page.setContent(html, {
+  waitUntil: "networkidle0",
+  timeout: 0
+});
+
+await page.evaluate(async () => {
+  const imgs = Array.from(document.images);
+
+  await Promise.all(
+    imgs.map(img => {
+      if (img.complete) return Promise.resolve();
+
+      return new Promise(resolve => {
+        img.onload = resolve;
+        img.onerror = resolve;
+      });
+    })
+  );
+});
+
+const pdf = await page.pdf({
+  format: "A4",
+  printBackground: true
+});
+//     const html = await ejs.renderFile(templatePath, templateData);
+
+//     // ---------------- Generate PDF ----------------
+    
+//     //today i did chnage here
+//     // const browser = await puppeteer.launch({
+//     //    headless: true,args: ['--no-sandbox', '--disable-setuid-sandbox'] });
+//   const browser = await puppeteer.launch({
+//   headless: "new",
+//   executablePath:
+//     process.env.PUPPETEER_EXECUTABLE_PATH || puppeteer.executablePath(),
+//   args: [
+//     "--no-sandbox",
+//     "--disable-setuid-sandbox",
+//     "--disable-dev-shm-usage",
+//     "--disable-gpu"
+//   ]
+// });
+//     const page = await browser.newPage();
+
+//     //await page.setContent(html, { waitUntil: "networkidle0" });
+// await page.setContent(html, {
+//   waitUntil: "domcontentloaded",
+//   timeout: 0
+// });
+//     const pdf = await page.pdf({
+//       format: "A4",
+//       printBackground: true
+//     });
+//     await browser.close();
+
+
+
+
+
+
+
+
+
+// const browser = await puppeteer.launch({
+//   headless: "new",
+//   executablePath:
+//     process.env.PUPPETEER_EXECUTABLE_PATH || puppeteer.executablePath(),
+//   args: [
+//     "--no-sandbox",
+//     "--disable-setuid-sandbox",
+//     "--disable-dev-shm-usage",
+//     "--disable-gpu"
+//   ]
+// });
+
+// const page = await browser.newPage();
+
+// await page.setContent(html, {
+//   waitUntil: "domcontentloaded",
+//   timeout: 0
+// });
+
+// await page.evaluateHandle('document.fonts.ready');
+
+// const pdf = await page.pdf({
+//   format: "A4",
+//   printBackground: true
+// });
+
+// await browser.close(); 
+
 
     // ---------------- Send PDF ----------------
     res.set({

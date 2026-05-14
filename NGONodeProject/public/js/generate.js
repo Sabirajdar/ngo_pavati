@@ -205,9 +205,45 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // }
 
-    if (downloadBtn) {
+//     if (downloadBtn) {
 
-    downloadBtn.addEventListener("click", function () {
+//     downloadBtn.addEventListener("click", async  function () {
+
+//         const receiptNo = receiptNumberInput.value.trim();
+
+//         if (!receiptNo) {
+//             alert("Please save the receipt first!");
+//             return;
+//         }
+
+//         try {
+//             // ✅ Mobile + Desktop compatible
+//             const pdfUrl = `/receipt/${receiptNo}/pdf`;
+
+//             // Open PDF in new tab (works on mobile)
+//         //    window.open(pdfUrl, "_blank");
+//         //i have changed here   
+//         //  window.location.href = pdfUrl;
+// const response = await fetch(pdfUrl, {
+//     method: "GET",
+//     credentials: "include"
+// });
+
+// const text = await response.text();
+
+// console.log(text);
+// alert(text);
+//         } catch (err) {
+//             console.error("PDF Download Error:", err);
+//             alert("Unable to download PDF. Please try again.");
+//         }
+
+//     });
+
+// }
+if (downloadBtn) {
+
+    downloadBtn.addEventListener("click", async function () {
 
         const receiptNo = receiptNumberInput.value.trim();
 
@@ -217,21 +253,43 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         try {
-            // ✅ Mobile + Desktop compatible
-            const pdfUrl = `/receipt/${receiptNo}/pdf`;
 
-            // Open PDF in new tab (works on mobile)
-            window.open(pdfUrl, "_blank");
+            const response = await fetch(`/receipt/${receiptNo}/pdf`, {
+                method: "GET",
+                credentials: "include"
+            });
+
+            if (!response.ok) {
+                throw new Error("PDF generation failed");
+            }
+
+            const blob = await response.blob();
+
+            const url = window.URL.createObjectURL(blob);
+
+            const link = document.createElement("a");
+
+            link.href = url;
+            link.download = `Receipt_${receiptNo}.pdf`;
+
+            document.body.appendChild(link);
+
+            link.click();
+
+            document.body.removeChild(link);
+
+            window.URL.revokeObjectURL(url);
 
         } catch (err) {
+
             console.error("PDF Download Error:", err);
-            alert("Unable to download PDF. Please try again.");
+            alert("Unable to download PDF");
+
         }
 
     });
 
 }
-
     /* ---------------- Reset Form ---------------- */
 
     if (resetBtn) {
